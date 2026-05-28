@@ -1,0 +1,401 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Title Tag for SEO -->
+  <title>HopeGrid - Empowering Communities Through Giving</title>
+  <!-- Meta Description for SEO -->
+  <meta name="description" content="Join HopeGrid in making a positive difference. Donate to support education, clean water, and relief funds around the world.">
+  
+  <!-- BOOTSTRAP 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- BOOTSTRAP ICONS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- CUSTOM STYLESHEET -->
+  <link rel="stylesheet" href="{% static 'style.css' %}?v=1.6">
+</head>
+<body>
+
+  <!-- ==========================================
+       NAVBAR SECTION 
+       Sticky, glassmorphic header for navigation.
+       ========================================== -->
+  <nav class="navbar navbar-expand-lg navbar-custom fixed-top py-3">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <i class="bi bi-heart-pulse-fill"></i> HopeGrid
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item px-2">
+            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="nav-item px-2">
+            <a class="nav-link" href="{% url 'about' %}">About Us</a>
+          </li>
+          <li class="nav-item px-2">
+            <a class="nav-link" href="{% url 'donate' %}">Donate</a>
+          </li>
+          <li class="nav-item px-2">
+            <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+          </li>
+          <li class="nav-item ms-3">
+            <!-- Pulse button to draw attention to donation -->
+            <a class="btn btn-primary-custom pulse-button" href="{% url 'donate' %}">
+              <i class="bi bi-heart-fill me-2"></i>Donate Now
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       HERO BANNER SECTION
+       Gradient background, float animations, and strong call to action.
+       ========================================== -->
+  <section class="hero-section" id="hero">
+    <div class="container">
+      <div class="row align-items-center min-vh-75">
+        <!-- Text details -->
+        <div class="col-lg-6 hero-content animate-fade-up">
+          <span class="badge bg-teal-soft text-teal mb-3 px-3 py-2 rounded-pill border border-teal" style="background-color: rgba(13, 148, 136, 0.1); color: var(--primary-color);">
+            <i class="bi bi-globe me-2"></i>Make a Difference Today
+          </span>
+          <h1 class="display-4 fw-extrabold mb-4" style="line-height: 1.2;">
+            Small Acts, <span style="color: var(--primary-color);">Big Impact</span>.<br>Help Shape the Future.
+          </h1>
+          <p class="lead text-muted mb-4">
+            We are dedicated to building sustainable, resilient communities. Join our mission to provide clean water, quality education, and medical aid to those who need it most.
+          </p>
+          <div class="d-flex gap-3">
+            <a href="{% url 'donate' %}" class="btn btn-primary-custom">
+              Start Giving <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+            <a href="{% url 'about' %}" class="btn btn-outline-custom">
+              Our Story
+            </a>
+          </div>
+        </div>
+        <!-- Hero Image with animated floating stickers -->
+        <div class="col-lg-6 mt-5 mt-lg-0 hero-img-container position-relative animate-fade-up" style="animation-delay: 0.2s;">
+          <img src="{% static 'images/hero.png' %}" alt="Happy volunteering group representing hope" class="img-fluid w-100">
+          
+          <!-- Floating badge 1 (Volunteers counter) -->
+          <div class="badge-floating badge-1 animate-float">
+            <div class="bg-success text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <div>
+              <div class="text-muted small">Active Volunteers</div>
+              <div class="fw-bold">1,250+ People</div>
+            </div>
+          </div>
+          
+          <!-- Floating badge 2 (Funding milestone) -->
+          <div class="badge-floating badge-2 animate-float" style="animation-delay: 2s;">
+            <div class="bg-warning text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+              <i class="bi bi-currency-dollar"></i>
+            </div>
+            <div>
+              <div class="text-muted small">Fundraised Goal</div>
+              <div class="fw-bold">85% Achieved</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       IMPACT STATISTICS SECTION
+       Counter boxes showing current organization progress.
+       ========================================== -->
+  <section class="py-5 bg-white border-bottom">
+    <div class="container">
+      <div class="row g-4 justify-content-center">
+        <!-- Stat card 1 -->
+        <div class="col-md-4 col-sm-6">
+          <div class="stat-card">
+            <div class="stat-number">$2.4M+</div>
+            <div class="text-muted font-weight-500">Total Funds Raised</div>
+          </div>
+        </div>
+        <!-- Stat card 2 -->
+        <div class="col-md-4 col-sm-6">
+          <div class="stat-card">
+            <div class="stat-number">45K+</div>
+            <div class="text-muted font-weight-500">Lives Nourished & Supported</div>
+          </div>
+        </div>
+        <!-- Stat card 3 -->
+        <div class="col-md-4 col-sm-6">
+          <div class="stat-card">
+            <div class="stat-number">12+</div>
+            <div class="text-muted font-weight-500">Countries Impacted</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       ACTIVE CAUSES / CURRENT CAMPAIGNS
+       Grid of cards detailing what donations go towards.
+       ========================================== -->
+  <section class="py-5" style="background-color: #f8fafc;">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <h2 class="h1 mb-3">Our Urgent Campaigns</h2>
+        <p class="text-muted mx-auto" style="max-width: 600px;">
+          Select one of our active campaigns to contribute directly. Your support feeds families, builds classrooms, and saves lives.
+        </p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Campaign Card 1 -->
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 glass-card h-100 hover-lift overflow-hidden">
+            <div class="position-relative">
+              <div style="height: 220px; background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);" class="d-flex align-items-center justify-content-center text-white">
+                <i class="bi bi-droplet-fill display-3"></i>
+              </div>
+              <span class="badge bg-teal position-absolute top-0 end-0 m-3 px-3 py-2" style="background-color: var(--primary-color);">Water Relief</span>
+            </div>
+            <div class="card-body p-4">
+              <h3 class="h5 card-title mb-3">Clean Drinking Water Wells</h3>
+              <p class="card-text text-muted mb-4">
+                Providing sustainable clean water systems to remote villages suffering from extreme drought and sanitation issues.
+              </p>
+              
+              <!-- Progress Bar -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between text-muted small mb-1">
+                  <span>Raised: <strong>$18,400</strong></span>
+                  <span>Goal: <strong>$25,000</strong></span>
+                </div>
+                <div class="progress" style="height: 8px; border-radius: 4px;">
+                  <div class="progress-bar" role="progressbar" style="width: 73.6%; background-color: var(--primary-color);" aria-valuenow="73.6" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+              
+              <a href="{% url 'donate' %}?campaign=water" class="btn btn-outline-custom w-100 mt-2">Support Project</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campaign Card 2 -->
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 glass-card h-100 hover-lift overflow-hidden">
+            <div class="position-relative">
+              <div style="height: 220px; background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%);" class="d-flex align-items-center justify-content-center text-white">
+                <i class="bi bi-book-half display-3"></i>
+              </div>
+              <span class="badge bg-amber position-absolute top-0 end-0 m-3 px-3 py-2" style="background-color: var(--secondary-color);">Education</span>
+            </div>
+            <div class="card-body p-4">
+              <h3 class="h5 card-title mb-3">Books & Classrooms Fund</h3>
+              <p class="card-text text-muted mb-4">
+                Funding desks, digital learning tablets, and textbook supplies for underfunded elementary schools in rural districts.
+              </p>
+              
+              <!-- Progress Bar -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between text-muted small mb-1">
+                  <span>Raised: <strong>$32,100</strong></span>
+                  <span>Goal: <strong>$35,000</strong></span>
+                </div>
+                <div class="progress" style="height: 8px; border-radius: 4px;">
+                  <div class="progress-bar" role="progressbar" style="width: 91.7%; background-color: var(--secondary-color);" aria-valuenow="91.7" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+              
+              <a href="{% url 'donate' %}?campaign=education" class="btn btn-outline-custom w-100 mt-2">Support Project</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campaign Card 3 -->
+        <div class="col-lg-4 col-md-6 mx-auto">
+          <div class="card border-0 glass-card h-100 hover-lift overflow-hidden">
+            <div class="position-relative">
+              <div style="height: 220px; background: linear-gradient(135deg, #6366f1 0%, #3730a3 100%);" class="d-flex align-items-center justify-content-center text-white">
+                <i class="bi bi-lungs-fill display-3"></i>
+              </div>
+              <span class="badge bg-primary position-absolute top-0 end-0 m-3 px-3 py-2" style="background-color: #6366f1;">Medical Care</span>
+            </div>
+            <div class="card-body p-4">
+              <h3 class="h5 card-title mb-3">Mobile Health Clinics</h3>
+              <p class="card-text text-muted mb-4">
+                Supplying mobile medical vans with critical treatment drugs, basic diagnostic toolkits, and professional nurses.
+              </p>
+              
+              <!-- Progress Bar -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between text-muted small mb-1">
+                  <span>Raised: <strong>$9,800</strong></span>
+                  <span>Goal: <strong>$20,000</strong></span>
+                </div>
+                <div class="progress" style="height: 8px; border-radius: 4px;">
+                  <div class="progress-bar" role="progressbar" style="width: 49%; background-color: #6366f1;" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+              
+              <a href="{% url 'donate' %}?campaign=medical" class="btn btn-outline-custom w-100 mt-2">Support Project</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       TESTIMONIALS SECTION
+       Bootstrap carousel showing quotes from donors & beneficiaries.
+       ========================================== -->
+  <section class="py-5 bg-white">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <h2 class="h1">Voice of Trust</h2>
+        <p class="text-muted">What our global community says about their journey with us</p>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner text-center">
+              
+              <!-- Slide 1 -->
+              <div class="carousel-item active">
+                <div class="fs-4 italic text-dark mb-4 px-4 font-body">
+                  "Seeing the water filter well active in our community changed everything. Our kids are healthy and are able to attend school daily now. We are eternally grateful."
+                </div>
+                <div class="fw-bold fs-5 text-teal" style="color: var(--primary-color);">Amina Yusuf</div>
+                <p class="small text-muted">Village Leader, Nigeria Relief Site</p>
+              </div>
+
+              <!-- Slide 2 -->
+              <div class="carousel-item">
+                <div class="fs-4 italic text-dark mb-4 px-4 font-body">
+                  "Transparency is why I support HopeGrid. I receive regular newsletters showing exactly where my monthly donation goes. It feels incredible to see the direct results."
+                </div>
+                <div class="fw-bold fs-5 text-teal" style="color: var(--primary-color);">David Lawson</div>
+                <p class="small text-muted">Monthly Donor since 2023</p>
+              </div>
+            </div>
+            
+            <!-- Carousel Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true" style="background-size: 50%;"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true" style="background-size: 50%;"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       CALL TO ACTION / NEWSLETTER
+       Simple newsletter and quick donate toggle.
+       ========================================== -->
+  <section class="py-5 text-white text-center" style="background: linear-gradient(135deg, #115e59 0%, #0d9488 100%);">
+    <div class="container py-4">
+      <h2 class="h1 mb-3">Ready to Join the Movement?</h2>
+      <p class="lead mb-4 mx-auto" style="max-width: 600px; opacity: 0.9;">
+        Whether you give your time, your voice, or a financial gift, you are making a difference. Let's build a brighter tomorrow, together.
+      </p>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{% url 'donate' %}" class="btn btn-secondary-custom btn-lg">
+          Make a Contribution <i class="bi bi-heart-fill ms-2"></i>
+        </a>
+        <a href="{% url 'contact' %}" class="btn btn-light btn-lg rounded-pill px-4 text-teal fw-bold" style="color: var(--primary-color);">
+          Become a Volunteer
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       FOOTER SECTION
+       Dynamic, professional footer with quick navigation links.
+       ========================================== -->
+  <footer class="footer-custom">
+    <div class="container">
+      <div class="row g-4">
+        <!-- Logo and About column -->
+        <div class="col-lg-4 col-md-6">
+          <h5 class="text-white"><i class="bi bi-heart-pulse-fill me-2" style="color: var(--primary-color);"></i>HopeGrid</h5>
+          <p class="text-muted mt-3">
+            HopeGrid is an international non-profit foundation focusing on sustainable development, community elevation, and global crisis relief.
+          </p>
+          <div class="social-icons mt-4">
+            <a href="#"><i class="bi bi-facebook"></i></a>
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+            <a href="#"><i class="bi bi-instagram"></i></a>
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+        
+        <!-- Navigation Links column -->
+        <div class="col-lg-2 col-md-6">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled mt-3">
+            <li class="mb-2"><a href="{% url 'home' %}">Home</a></li>
+            <li class="mb-2"><a href="{% url 'about' %}">About Us</a></li>
+            <li class="mb-2"><a href="{% url 'donate' %}">Donate</a></li>
+            <li class="mb-2"><a href="{% url 'contact' %}">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <!-- Campaigns column -->
+        <div class="col-lg-3 col-md-6">
+          <h5>Active Projects</h5>
+          <ul class="list-unstyled mt-3">
+            <li class="mb-2"><a href="{% url 'donate' %}?campaign=water">Water Relief Wells</a></li>
+            <li class="mb-2"><a href="{% url 'donate' %}?campaign=education">Books & Classrooms</a></li>
+            <li class="mb-2"><a href="{% url 'donate' %}?campaign=medical">Mobile Health Care</a></li>
+            <li class="mb-2"><a href="{% url 'donate' %}?campaign=all">General Growth Fund</a></li>
+          </ul>
+        </div>
+
+        <!-- Newsletter Sign-up column -->
+        <div class="col-lg-3 col-md-6">
+          <h5>Stay Updated</h5>
+          <p class="text-muted mt-3">Receive stories of impact, transparency reports, and invitation alerts.</p>
+          <form class="mt-3" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+            <div class="input-group">
+              <input type="email" class="form-control" placeholder="Your Email Address" aria-label="Your Email" required style="border-radius: 8px 0 0 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
+              <button class="btn btn-primary-custom" type="submit" style="border-radius: 0 8px 8px 0;">Go</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <hr class="my-5" style="border-color: rgba(255,255,255,0.1);">
+
+      <div class="row align-items-center">
+        <div class="col-md-6 text-center text-md-start small">
+          &copy; 2026 HopeGrid Organization. All Rights Reserved. Registered 501(c)(3) charity.
+        </div>
+        <div class="col-md-6 text-center text-md-end small mt-3 mt-md-0">
+          <a href="#" class="me-3">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BOOTSTRAP 5 BUNDLE WITH POPPER JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

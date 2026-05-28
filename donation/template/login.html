@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - HopeGrid Portal</title>
+  
+  <!-- BOOTSTRAP 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- BOOTSTRAP ICONS (For form inputs and social buttons) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- CUSTOM STYLESHEET (Included below) -->
+  <link rel="stylesheet" href="{% static 'style.css' %}?v=1.6">
+</head>
+<body>
+
+  <!-- Background decorative floating circles -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- Main Full-page Container -->
+  <div class="login-wrapper container d-flex align-items-center justify-content-center min-vh-100">
+    
+    <!-- Glassmorphic Login Card -->
+    <div class="card login-card p-4 p-md-5 border-0 shadow">
+      
+      <!-- Brand Logo / Header -->
+      <div class="text-center mb-4">
+        <div class="brand-icon mx-auto mb-2">
+          <i class="bi bi-heart-pulse-fill"></i>
+        </div>
+        <h2 class="fw-bold mb-1">Welcome Back</h2>
+        <p class="text-muted small">Access your HopeGrid dashboard portal</p>
+      </div>
+
+      <!-- Tab / Role Switch Slider -->
+      <div class="role-selector mb-4">
+        <!-- Background Slider Pill -->
+        <div class="role-slider-bg"></div>
+        <!-- Selector Buttons -->
+        <button type="button" class="role-btn active" id="btn-donor" onclick="switchRole('donor')">
+          <i class="bi bi-heart-fill me-1"></i> Donor
+        </button>
+        <button type="button" class="role-btn" id="btn-admin" onclick="switchRole('admin')">
+          <i class="bi bi-shield-lock-fill me-1"></i> Admin
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        
+        <!-- Input field: Username or Email -->
+        <div class="mb-3">
+          <label for="emailInput" class="form-label text-muted small fw-bold">Username or Email</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+            <input type="text" class="form-control" id="emailInput" placeholder="Username or Email" required>
+          </div>
+        </div>
+
+        <!-- Input field: Password -->
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <label for="passwordInput" class="form-label text-muted small fw-bold mb-0">Password</label>
+            <a href="#" class="forgot-link text-decoration-none small">Forgot?</a>
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <input type="password" class="form-control" id="passwordInput" placeholder="••••••••" required>
+          </div>
+        </div>
+
+        <!-- Checkbox: Remember Me -->
+        <div class="mb-4 d-flex justify-content-between align-items-center">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="rememberMe">
+            <label class="form-check-label text-muted small" for="rememberMe">
+              Remember this device
+            </label>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-login w-100 py-3 mb-3 fw-bold" id="submitBtn">
+          <span id="btnText">Log In as <span id="roleLabel">Donor</span></span>
+          <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+        </button>
+
+        <!-- Social login divider (For Donors only) -->
+        <div id="socialSection">
+          <div class="text-center position-relative my-4">
+            <hr class="text-muted opacity-25">
+            <span class="position-absolute translate-middle px-3 bg-white text-muted small" style="top: 50%;">Or login with</span>
+          </div>
+
+          <!-- Social Login Buttons -->
+          <div class="row g-2">
+            <div class="col-6">
+              <a href="#" class="btn btn-outline-social w-100">
+                <i class="bi bi-google me-2 text-danger"></i> Google
+              </a>
+            </div>
+            <div class="col-6">
+              <a href="#" class="btn btn-outline-social w-100">
+                <i class="bi bi-apple me-2 text-dark"></i> Apple ID
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Footer Info / Register Option -->
+      <div class="text-center mt-4">
+        <p class="text-muted small mb-0" id="registerPrompt">
+          New to HopeGrid? <a href="#" class="text-primary-custom fw-semibold text-decoration-none">Create a donor account</a>
+        </p>
+        <p class="text-muted small mb-0 d-none" id="adminPrompt">
+          Authorized personnel only. Logs are actively monitored.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOOTSTRAP 5 BUNDLE -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- INTERACTIVE INTERFACE JAVASCRIPT -->
+  <script>
+    // State variable: track currently selected role
+    let currentRole = 'donor';
+
+    // 1. Role Toggle Handler
+    function switchRole(role) {
+      if (role === currentRole) return;
+      currentRole = role;
+
+      // Update button toggles styling
+      const donorBtn = document.getElementById('btn-donor');
+      const adminBtn = document.getElementById('btn-admin');
+      donorBtn.classList.toggle('active', role === 'donor');
+      adminBtn.classList.toggle('active', role === 'admin');
+
+      // Slide Background Toggle Pill
+      const slider = document.querySelector('.role-slider-bg');
+      if (role === 'admin') {
+        slider.style.transform = 'translateX(100%)';
+      } else {
+        slider.style.transform = 'translateX(0)';
+      }
+
+      // Update Button Label
+      document.getElementById('roleLabel').innerText = role.charAt(0).toUpperCase() + role.slice(1);
+
+      // Show/Hide role specific content (Social login, prompts)
+      const socialSection = document.getElementById('socialSection');
+      const registerPrompt = document.getElementById('registerPrompt');
+      const adminPrompt = document.getElementById('adminPrompt');
+
+      if (role === 'admin') {
+        socialSection.classList.add('d-none');
+        registerPrompt.classList.add('d-none');
+        adminPrompt.classList.remove('d-none');
+      } else {
+        socialSection.classList.remove('d-none');
+        registerPrompt.classList.remove('d-none');
+        adminPrompt.classList.add('d-none');
+      }
+
+      // Clear inputs for security
+      document.getElementById('emailInput').value = '';
+      document.getElementById('passwordInput').value = '';
+    }
+
+    // 2. Submit Action Mockup Handler
+    function handleLogin(e) {
+      e.preventDefault();
+      
+      const usernameOrEmail = document.getElementById('emailInput').value;
+      const password = document.getElementById('passwordInput').value;
+      const btn = document.getElementById('submitBtn');
+      const text = document.getElementById('btnText');
+      const spinner = document.getElementById('btnSpinner');
+
+      // Show loading spinner
+      btn.disabled = true;
+      text.classList.add('d-none');
+      spinner.classList.remove('d-none');
+
+      // Simulating database verification timeout (1.0 seconds)
+      setTimeout(() => {
+        btn.disabled = false;
+        text.classList.remove('d-none');
+        spinner.classList.add('d-none');
+
+        if (currentRole === 'admin') {
+          if (password === 'admin123' && (usernameOrEmail === 'admin' || usernameOrEmail === 'admin@example.com')) {
+            // Redirect to Django Admin panel
+            window.location.href = '/admin/';
+          } else {
+            alert('Invalid Admin credentials. Use Username: admin, Password: admin123');
+          }
+        } else {
+          // Donor Mock login success
+          alert(`Successfully logged in as Donor:\n${usernameOrEmail}`);
+          window.location.href = '/';
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

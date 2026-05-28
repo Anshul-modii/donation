@@ -1,0 +1,769 @@
+/* login page */
+/* 
+================================================================================
+   CUSTOM LOGIN PAGE STYLESHEET
+   Includes responsive grid layouts, custom floating decorative background blobs,
+   and clean glassmorphism card designs.
+================================================================================
+*/
+
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap');
+
+/* Color Variables */
+:root {
+  --primary-color: #0d9488;      /* Deep Teal */
+  --primary-hover: #0f766e;      /* Dark Teal */
+  --secondary-color: #f59e0b;    /* Gold */
+  --text-dark: #0f172a;          /* Slate Dark */
+  --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #ccfbf1 100%);
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* Full Screen Layout Adjustments */
+body {
+  font-family: var(--font-body);
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+/* Decorative Background Elements */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  opacity: 0.6;
+}
+
+.blob-1 {
+  width: 350px;
+  height: 350px;
+  background-color: #0ea5e9; /* Sky Blue */
+  top: -100px;
+  left: -50px;
+}
+
+.blob-2 {
+  width: 400px;
+  height: 400px;
+  background-color: #2dd4bf; /* Mint Teal */
+  bottom: -150px;
+  right: -50px;
+}
+
+/* Login Wrapper */
+.login-wrapper {
+  position: relative;
+  z-index: 10;
+}
+
+/* Glassmorphism Card Container */
+.login-card {
+  width: 100%;
+  max-width: 480px;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 20px 40px rgba(13, 148, 136, 0.08) !important;
+}
+
+/* Logo Design */
+.brand-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: var(--primary-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 8px 16px rgba(13, 148, 136, 0.2);
+}
+
+/* Tabbed Switch (Donor / Admin selector) */
+.role-selector {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 14px;
+  padding: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.role-slider-bg {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  bottom: 4px;
+  width: calc(50% - 4px);
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.role-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #64748b;
+  position: relative;
+  z-index: 2;
+  transition: color 0.3s;
+}
+
+.role-btn.active {
+  color: var(--primary-color);
+}
+
+/* Form Input Enhancements */
+.form-label {
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.input-group-text {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+  color: #94a3b8;
+}
+
+.form-control {
+  border: 2px solid #e2e8f0;
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+  padding: 12px 16px 12px 0;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: none;
+  outline: none;
+}
+
+.form-control:focus + .input-group-text,
+.input-group:focus-within .input-group-text {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+/* Login Action Button */
+.btn-login {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+
+.btn-login:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(13, 148, 136, 0.25);
+  color: white;
+}
+
+/* Link Actions Styles */
+.forgot-link, .text-primary-custom {
+  color: var(--primary-color);
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.forgot-link:hover, .text-primary-custom:hover {
+  color: var(--primary-hover);
+}
+
+/* Outlined Social Logins Button styles */
+.btn-outline-social {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 0;
+  font-weight: 600;
+  color: #475569;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-outline-social:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  color: #1e293b;
+}
+
+/* Checkbox Color overrides */
+.form-check-input:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* 
+================================================================================
+   CUSTOM STYLESHEET FOR MODERN DONATION WEBSITE
+   Designed with premium aesthetics, soft gradients, modern typography, 
+   glassmorphism, and responsive CSS micro-animations.
+   
+   Feel free to edit variables under :root to quickly change the theme colors!
+================================================================================
+*/
+
+/* 1. GOOGLE FONTS IMPORT */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+/* 2. CSS CUSTOM VARIABLES (Theme Color Customization) */
+:root {
+  --primary-color: #0d9488;      /* Deep Teal - represents trust, health, growth */
+  --primary-hover: #0f766e;      /* Darker Teal for hover states */
+  --secondary-color: #f59e0b;    /* Warm Amber/Gold - represents optimism and urgency */
+  --secondary-hover: #d97706;    /* Darker Amber */
+  --dark-color: #0f172a;         /* Deep Slate - for text and dark backgrounds */
+  --light-color: #f8fafc;        /* Very light background */
+  --glass-bg: rgba(255, 255, 255, 0.85); /* For Glassmorphism effect */
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 8px 32px 0 rgba(13, 148, 136, 0.08); /* Glow shadow tint of teal */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* 3. BASE STYLING & RESET */
+body {
+  font-family: var(--font-body);
+  background-color: var(--light-color);
+  color: #334155;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--dark-color);
+}
+
+/* Custom selection color */
+::selection {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* 4. PREMIUM NAVIGATION BAR */
+.navbar-custom {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  transition: var(--transition-smooth);
+}
+
+.navbar-brand {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--primary-color) !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-link {
+  font-weight: 500;
+  color: #475569 !important;
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--primary-color) !important;
+}
+
+/* Animated Underline Effect for Nav Links */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--primary-color);
+  transition: var(--transition-smooth);
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+  width: 100%;
+}
+
+/* 5. MICRO-ANIMATIONS */
+
+/* Fade In Up animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Floating animation for icons/badges */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Pulse animation for CTA buttons */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(13, 148, 136, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
+}
+
+.pulse-button {
+  animation: pulseGlow 2s infinite;
+}
+
+/* Hover Scale Utility */
+.hover-lift {
+  transition: var(--transition-smooth);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+/* 6. GLASSMORPHISM STYLES */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 16px;
+  transition: var(--transition-smooth);
+}
+
+.glass-card:hover {
+  border-color: rgba(13, 148, 136, 0.2);
+}
+
+/* 7. HERO SECTION CUSTOM GRADIENT */
+.hero-section {
+  position: relative;
+  background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+  padding: 140px 0 100px 0;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.15) 0%, rgba(255,255,255,0) 70%);
+  top: -50px;
+  right: -50px;
+  z-index: 0;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, rgba(255,255,255,0) 70%);
+  bottom: -100px;
+  left: -100px;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+}
+
+.hero-img-container {
+  position: relative;
+  z-index: 10;
+}
+
+.hero-img-container img {
+  border-radius: 24px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+  border: 4px solid white;
+}
+
+.badge-floating {
+  position: absolute;
+  background: white;
+  border-radius: 12px;
+  padding: 12px 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.badge-1 {
+  top: 15%;
+  left: -20px;
+}
+
+.badge-2 {
+  bottom: 15%;
+  right: -10px;
+}
+
+/* 8. CUSTOM BUTTONS */
+.btn-primary-custom {
+  background-color: var(--primary-color);
+  color: white !important;
+  border: none;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 50px;
+  transition: var(--transition-smooth);
+}
+
+.btn-primary-custom:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(13, 148, 136, 0.25);
+}
+
+.btn-secondary-custom {
+  background-color: var(--secondary-color);
+  color: white !important;
+  border: none;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 50px;
+  transition: var(--transition-smooth);
+}
+
+.btn-secondary-custom:hover {
+  background-color: var(--secondary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.25);
+}
+
+.btn-outline-custom {
+  background-color: transparent;
+  color: var(--primary-color) !important;
+  border: 2px solid var(--primary-color);
+  font-weight: 600;
+  padding: 10px 26px;
+  border-radius: 50px;
+  transition: var(--transition-smooth);
+}
+
+.btn-outline-custom:hover {
+  background-color: var(--primary-color);
+  color: white !important;
+  transform: translateY(-2px);
+}
+
+/* 9. DONATION COMPONENT STYLES (donate.html SPECIFIC) */
+.donation-box {
+  border-radius: 20px;
+  padding: 30px;
+}
+
+/* Tab triggers styling */
+.donate-tabs .nav-link {
+  border: none;
+  background: #f1f5f9;
+  color: #64748b !important;
+  font-weight: 600;
+  border-radius: 30px;
+  padding: 10px 24px;
+  margin: 0 5px;
+}
+
+.donate-tabs .nav-link.active {
+  background: var(--primary-color);
+  color: white !important;
+}
+
+.donate-tabs .nav-link::after {
+  display: none; /* Turn off underline animation for tabs */
+}
+
+/* Preset Amount Buttons */
+.btn-amount {
+  border: 2px solid #e2e8f0;
+  background: white;
+  border-radius: 12px;
+  padding: 15px 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #475569;
+  transition: var(--transition-smooth);
+}
+
+.btn-amount:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: #f0fdfa;
+}
+
+.btn-amount.active {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 5px 15px rgba(13, 148, 136, 0.15);
+}
+
+/* Form Controls Custom Styling */
+.form-control-custom {
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-weight: 500;
+  transition: var(--transition-smooth);
+}
+
+.form-control-custom:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+  outline: none;
+}
+
+.input-group-text-custom {
+  background-color: #f1f5f9;
+  border: 2px solid #e2e8f0;
+  border-right: none;
+  font-weight: 700;
+  color: #475569;
+  border-radius: 10px 0 0 10px;
+}
+
+/* 10. TIMELINE STYLE (about.html SPECIFIC) */
+.timeline {
+  position: relative;
+  border-left: 3px solid #e2e8f0;
+  padding-left: 30px;
+  margin-left: 15px;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  left: -39px;
+  top: 5px;
+  border: 4px solid white;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
+}
+
+/* 11. STATS CARD */
+.stat-card {
+  padding: 24px;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+/* 12. TEAM CARDS */
+.team-member-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+  margin: 0 auto 15px auto;
+  transition: var(--transition-smooth);
+}
+
+.team-card:hover .team-member-img {
+  transform: scale(1.1);
+  border-color: var(--primary-color);
+}
+
+/* 13. MOCKUP MAP */
+.mock-map {
+  height: 350px;
+  background: radial-gradient(circle, #cbd5e1 10%, #e2e8f0 90%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.mock-map-pin {
+  width: 20px;
+  height: 20px;
+  background-color: var(--secondary-color);
+  border-radius: 50%;
+  border: 3px solid white;
+  position: relative;
+  animation: float 2s infinite ease-in-out;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.mock-map-pin::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.3);
+  left: -13px;
+  top: -13px;
+  animation: pulseGlow 1.5s infinite;
+}
+
+/* 14. FOOTER CUSTOM */
+.footer-custom {
+  background-color: var(--dark-color);
+  color: #94a3b8;
+  padding: 80px 0 30px 0;
+  font-size: 0.95rem;
+}
+
+.footer-custom h5 {
+  color: white;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.footer-custom a {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+
+.footer-custom a:hover {
+  color: white;
+  padding-left: 5px;
+}
+
+.social-icons a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  color: white !important;
+}
+
+.social-icons a:hover {
+  background: var(--primary-color);
+  transform: translateY(-3px);
+  padding-left: 0 !important; /* disable hover shift for social icons */
+}
+
+/* ============================================================================
+   PAYMENT METHOD BUTTON IMPROVEMENTS
+   Ensures cards, PayPal, and UPI options have highly readable checked/hover states
+   where icons and text are perfectly visible.
+   ============================================================================ */
+.btn-check + .payment-method-btn {
+  background-color: #ffffff !important;
+  color: #64748b !important; /* Slate gray text by default */
+  border: 2px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  transition: all 0.25s ease;
+  box-shadow: none !important;
+}
+
+.btn-check + .payment-method-btn i {
+  color: #94a3b8 !important; /* Slate icon by default */
+  transition: all 0.25s ease;
+}
+
+/* Hover state (when NOT checked) - Text and icon become solid black, background remains white */
+.btn-check:not(:checked) + .payment-method-btn:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important; /* Solid Black text */
+  border-color: #000000 !important; /* Solid Black border */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+.btn-check:not(:checked) + .payment-method-btn:hover i {
+  color: #000000 !important; /* Solid Black icon */
+}
+
+/* Checked state (when NOT hovered) */
+.btn-check:checked + .payment-method-btn {
+  background-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 8px 16px rgba(13, 148, 136, 0.15) !important;
+}
+
+.btn-check:checked + .payment-method-btn i {
+  color: #ffffff !important;
+}
+
+/* Checked state AND hovered */
+.btn-check:checked + .payment-method-btn:hover {
+  background-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  border-color: var(--primary-color) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(13, 148, 136, 0.25) !important;
+}
+
+.btn-check:checked + .payment-method-btn:hover i {
+  color: #ffffff !important;
+}

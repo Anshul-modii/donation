@@ -1,0 +1,817 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Title Tag for SEO -->
+  <title>Donate Now - HopeGrid Foundation</title>
+  <!-- Meta Description for SEO -->
+  <meta name="description" content="Support our mission. Make a secure credit card, PayPal, or UPI donation to fund clean water, medical aid, and education initiatives.">
+  
+  <!-- BOOTSTRAP 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- BOOTSTRAP ICONS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- CUSTOM STYLESHEET -->
+  <link rel="stylesheet" href="{% static 'style.css' %}?v=1.6">
+</head>
+<body>
+
+  <!-- ==========================================
+       NAVBAR SECTION (Consistent across all pages)
+       ========================================== -->
+  <nav class="navbar navbar-expand-lg navbar-custom fixed-top py-3">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <i class="bi bi-heart-pulse-fill"></i> HopeGrid
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item px-2">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="nav-item px-2">
+            <a class="nav-link" href="{% url 'about' %}">About Us</a>
+          </li>
+          <li class="nav-item px-2">
+            <a class="nav-link active" aria-current="page" href="{% url 'donate' %}">Donate</a>
+          </li>
+          <li class="nav-item px-2">
+            <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+          </li>
+          <li class="nav-item ms-3">
+            <a class="btn btn-primary-custom pulse-button" href="{% url 'donate' %}">
+              <i class="bi bi-heart-fill me-2"></i>Donate Now
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       HERO / BREADCRUMB HEADER
+       ========================================== -->
+  <section class="py-5" style="background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%); padding-top: 140px !important;">
+    <div class="container text-center py-4 animate-fade-up">
+      <h1 class="display-4 fw-extrabold mb-3">Support Our Cause</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-center bg-transparent p-0 mb-0">
+          <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-teal text-decoration-none" style="color: var(--primary-color);">Home</a></li>
+          <li class="breadcrumb-item active text-dark" aria-current="page">Donate</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       MAIN INTERACTIVE DONATION PORTAL
+       ========================================== -->
+  <section class="py-5 bg-white">
+    <div class="container py-4">
+      <div class="row g-5">
+        
+        <!-- Left Side: Interactive Portal Card with Tab Options -->
+        <div class="col-lg-7 animate-fade-up">
+          
+          <!-- Donation Type Selector Tabs -->
+          <div class="d-flex justify-content-center mb-4">
+            <div class="nav nav-pills p-1 bg-light rounded-pill border donate-tabs" role="tablist" style="width: fit-content;">
+              <button class="nav-link active rounded-pill px-4 py-2 fw-semibold" id="tab-cash" data-bs-toggle="pill" data-bs-target="#panel-cash" type="button" role="tab" aria-controls="panel-cash" aria-selected="true" style="border: none;">
+                <i class="bi bi-wallet2 me-2"></i>Cash Donation
+              </button>
+              <button class="nav-link rounded-pill px-4 py-2 fw-semibold" id="tab-product" data-bs-toggle="pill" data-bs-target="#panel-product" type="button" role="tab" aria-controls="panel-product" aria-selected="false" style="border: none;">
+                <i class="bi bi-box-seam me-2"></i>Donate Products
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-content">
+            <!-- PANEL A: CASH DONATION FORM -->
+            <div class="tab-pane fade show active" id="panel-cash" role="tabpanel" aria-labelledby="tab-cash">
+              <div class="card border-0 glass-card donation-box">
+                <h2 class="h3 fw-bold mb-4"><i class="bi bi-credit-card-2-front-fill me-2 text-teal" style="color: var(--primary-color);"></i> Secure Donation Form</h2>
+                
+                <form id="donationForm" novalidate>
+                  {% csrf_token %}
+                  
+                  <!-- 2. Preset Amount Buttons -->
+                  <div class="mb-4">
+                    <label class="form-label text-muted fw-semibold mb-3">Select Contribution Amount (₹)</label>
+                    <div class="row g-3 text-center">
+                      <div class="col-4 col-sm-2">
+                        <button type="button" class="btn btn-amount w-100" data-amount="200" onclick="selectAmount(200, this)">₹200</button>
+                      </div>
+                      <div class="col-4 col-sm-2">
+                        <button type="button" class="btn btn-amount w-100 active" data-amount="500" onclick="selectAmount(500, this)">₹500</button>
+                      </div>
+                      <div class="col-4 col-sm-2">
+                        <button type="button" class="btn btn-amount w-100" data-amount="1000" onclick="selectAmount(1000, this)">₹1000</button>
+                      </div>
+                      <div class="col-4 col-sm-2">
+                        <button type="button" class="btn btn-amount w-100" data-amount="2000" onclick="selectAmount(2000, this)">₹2000</button>
+                      </div>
+                      <div class="col-4 col-sm-2">
+                        <button type="button" class="btn btn-amount w-100" data-amount="5000" onclick="selectAmount(5000, this)">₹5000</button>
+                      </div>
+                      <div class="col-4 col-sm-2">
+                        <button type="button" class="btn btn-amount w-100" id="custom-amount-btn" onclick="focusCustomInput()">Custom</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Custom Amount Input Field -->
+                  <div class="mb-4" id="customAmountGroup">
+                    <div class="input-group">
+                      <span class="input-group-text input-group-text-custom">₹</span>
+                      <input type="number" id="customAmountInput" class="form-control form-control-custom" placeholder="Enter custom amount" min="200" value="500" oninput="handleCustomInput(this.value)">
+                    </div>
+                    <div class="form-text mt-1 text-muted">Minimum contribution is ₹200.00</div>
+                  </div>
+
+                  <!-- 3. Project Campaign Selection -->
+                  <div class="mb-4">
+                    <label for="campaignSelect" class="form-label text-muted fw-semibold">Direct my Donation To</label>
+                    <select class="form-select form-control-custom" id="campaignSelect">
+                      <option value="general" selected>General Needs (Where it is needed most)</option>
+                      <option value="water">Clean Drinking Water Wells</option>
+                      <option value="education">Books & Classrooms Fund</option>
+                      <option value="medical">Mobile Health Clinics</option>
+                    </select>
+                  </div>
+
+                  <!-- 4. Donor Personal Info -->
+                  <div class="mb-4">
+                    <label class="form-label text-muted fw-semibold mb-3">Donor Details</label>
+                    <div class="row g-3">
+                      <div class="col-sm-6">
+                        <input type="text" id="donorName" class="form-control form-control-custom" placeholder="Full Name" required>
+                        <div class="invalid-feedback">Please enter your name.</div>
+                      </div>
+                      <div class="col-sm-6">
+                        <input type="email" id="donorEmail" class="form-control form-control-custom" placeholder="Email Address" required>
+                        <div class="invalid-feedback">Please enter a valid email address.</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 5. Payment Method Tabs -->
+                  <div class="mb-4">
+                    <label class="form-label text-muted fw-semibold mb-3">Choose Payment Method</label>
+                    <div class="row g-3">
+                      <!-- Credit Card option -->
+                      <div class="col-4">
+                        <input type="radio" class="btn-check" name="paymentMethod" id="pay-cc" value="card" checked onclick="togglePaymentSection('card')">
+                        <label class="btn payment-method-btn w-100 py-3 d-flex flex-column align-items-center justify-content-center gap-2" for="pay-cc" style="border-radius:12px; border-width: 2px;">
+                          <i class="bi bi-credit-card-2-front fs-4"></i>
+                          <span class="small fw-bold">Card</span>
+                        </label>
+                      </div>
+                      <!-- PayPal option -->
+                      <div class="col-4">
+                        <input type="radio" class="btn-check" name="paymentMethod" id="pay-paypal" value="paypal" onclick="togglePaymentSection('paypal')">
+                        <label class="btn payment-method-btn w-100 py-3 d-flex flex-column align-items-center justify-content-center gap-2" for="pay-paypal" style="border-radius:12px; border-width: 2px;">
+                          <i class="bi bi-paypal fs-4"></i>
+                          <span class="small fw-bold">PayPal</span>
+                        </label>
+                      </div>
+                      <!-- UPI option -->
+                      <div class="col-4">
+                        <input type="radio" class="btn-check" name="paymentMethod" id="pay-upi" value="upi" onclick="togglePaymentSection('upi')">
+                        <label class="btn payment-method-btn w-100 py-3 d-flex flex-column align-items-center justify-content-center gap-2" for="pay-upi" style="border-radius:12px; border-width: 2px;">
+                          <i class="bi bi-qr-code-scan fs-4"></i>
+                          <span class="small fw-bold">UPI</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 6. Dynamically Swapped Payment Forms -->
+                  
+                  <!-- Card Payment Fields -->
+                  <div id="payment-card" class="payment-method-fields p-3 rounded-4 bg-light mb-4 border">
+                    <h4 class="h6 fw-bold mb-3 text-dark">Credit/Debit Card Details</h4>
+                    <div class="row g-3">
+                      <div class="col-12">
+                        <div class="input-group">
+                          <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-credit-card-fill"></i></span>
+                          <input type="text" id="cardNumber" class="form-control border-start-0 ps-0" placeholder="Card Number" style="border-radius: 0 8px 8px 0; border: 1px solid #ced4da;" required>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <input type="text" id="cardExpiry" class="form-control" placeholder="MM / YY" style="border-radius: 8px;" required>
+                      </div>
+                      <div class="col-sm-6">
+                        <input type="text" id="cardCvv" class="form-control" placeholder="CVV" style="border-radius: 8px;" required>
+                      </div>
+                      <div class="col-12">
+                        <input type="text" id="cardName" class="form-control" placeholder="Cardholder Name" style="border-radius: 8px;" required>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PayPal Fields -->
+                  <div id="payment-paypal" class="payment-method-fields p-4 rounded-4 bg-light mb-4 border text-center d-none">
+                    <i class="bi bi-paypal display-4 text-primary mb-2"></i>
+                    <h4 class="h6 fw-bold mb-2">PayPal Checkout Integration</h4>
+                    <p class="text-muted small">
+                      Upon clicking submit below, you will be redirected to PayPal's secure portal to authorize your donation.
+                    </p>
+                  </div>
+
+                  <!-- UPI Fields -->
+                  <div id="payment-upi" class="payment-method-fields p-3 rounded-4 bg-light mb-4 border d-none">
+                    <div class="text-center mb-3">
+                      <i class="bi bi-qr-code display-4 text-dark mb-2 d-block"></i>
+                      <h4 class="h6 fw-bold mb-1">UPI Instant Contribution</h4>
+                      <p class="text-muted small">Scan the QR or transfer directly to our verified UPI ID. Please submit your transaction Reference ID for verification.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <label class="form-label small fw-bold text-muted mb-1">NGO UPI ID</label>
+                      <div class="input-group">
+                        <input type="text" id="upiIdField" class="form-control form-control-sm bg-white fw-bold" value="anshulmodi79@oksbi" readonly style="font-size: 0.85rem; font-family: monospace;">
+                        <button class="btn btn-outline-secondary btn-sm" type="button" onclick="copyUpiId()"><i class="bi bi-clipboard"></i> Copy ID</button>
+                      </div>
+                    </div>
+
+                    <div class="mb-1">
+                      <label for="upiRefNumber" class="form-label small fw-bold text-muted mb-1">UPI Transaction Reference ID (12-Digits)</label>
+                      <input type="text" id="upiRefNumber" class="form-control form-control-sm" placeholder="e.g. 304589234512" pattern="[0-9]{12}" title="Please enter a valid 12-digit transaction reference number" style="border-radius: 8px;">
+                      <div class="invalid-feedback">Please enter a valid 12-digit UPI reference ID.</div>
+                    </div>
+                  </div>
+
+                  <!-- Submit Button -->
+                  <button type="submit" class="btn btn-primary-custom btn-lg w-100 py-3" id="submitBtn">
+                    <span id="btnText">Process Secure Donation (<span id="btnAmountText">₹500</span>)</span>
+                    <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- PANEL B: PRODUCT DONATION FORM -->
+            <div class="tab-pane fade" id="panel-product" role="tabpanel" aria-labelledby="tab-product">
+              <div class="card border-0 glass-card donation-box">
+                <h2 class="h3 fw-bold mb-4"><i class="bi bi-box-seam me-2 text-teal" style="color: var(--primary-color);"></i> Donate Physical Products</h2>
+                
+                <form id="productDonationForm" novalidate>
+                  {% csrf_token %}
+                  
+                  <!-- 1. Donor Information Group -->
+                  <div class="mb-4">
+                    <label class="form-label text-muted fw-semibold mb-3">Your Contact Details</label>
+                    <div class="row g-3">
+                      <div class="col-12">
+                        <input type="text" id="prodDonorName" class="form-control form-control-custom" placeholder="Full Name" required>
+                        <div class="invalid-feedback">Please enter your name.</div>
+                      </div>
+                      <div class="col-sm-6">
+                        <input type="email" id="prodDonorEmail" class="form-control form-control-custom" placeholder="Email Address" required>
+                        <div class="invalid-feedback">Please enter a valid email address.</div>
+                      </div>
+                      <div class="col-sm-6">
+                        <input type="text" id="prodDonorPhone" class="form-control form-control-custom" placeholder="Phone Number (e.g. +91 98765 43210)" required>
+                        <div class="invalid-feedback">Please enter your phone number.</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 2. Product Information Group -->
+                  <div class="mb-4">
+                    <label class="form-label text-muted fw-semibold mb-3">Product Information</label>
+                    <div class="row g-3">
+                      <div class="col-sm-6">
+                        <label for="prodCategory" class="form-label small text-muted mb-1">Item Category</label>
+                        <select class="form-select form-control-custom" id="prodCategory" required>
+                          <option value="book" selected>Books & Stationery</option>
+                          <option value="food">Food & Groceries</option>
+                          <option value="clothes">Clothes & Apparel</option>
+                          <option value="furniture">Furniture & Household</option>
+                          <option value="machine">Machines & Electronic Appliances</option>
+                          <option value="other">Other Products</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-6">
+                        <label for="prodName" class="form-label small text-muted mb-1">Product Title / Name</label>
+                        <input type="text" id="prodName" class="form-control form-control-custom" placeholder="e.g. High School textbooks, Winter blankets" required>
+                        <div class="invalid-feedback">Please enter the product name.</div>
+                      </div>
+                      <div class="col-12">
+                        <label for="prodCondition" class="form-label small text-muted mb-1">Item Condition</label>
+                        <select class="form-select form-control-custom" id="prodCondition" required>
+                          <option value="New">Brand New / Sealed</option>
+                          <option value="Like New">Like New / Barely Used</option>
+                          <option value="Good" selected>Good / Fully Functional</option>
+                          <option value="Fair">Fair / Needs minor cleanup</option>
+                          <option value="Poor">Poor / Needs repair</option>
+                        </select>
+                      </div>
+                      <div class="col-12">
+                        <label for="prodDesc" class="form-label small text-muted mb-1">Description & Quantity</label>
+                        <textarea id="prodDesc" class="form-control form-control-custom" rows="2" placeholder="Describe the items, quantity, size details, weight, or package type..." required></textarea>
+                        <div class="invalid-feedback">Please provide a description.</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 3. Pickup Logistics Group -->
+                  <div class="mb-4">
+                    <label class="form-label text-muted fw-semibold mb-3">Collection & Pickup Details</label>
+                    <div class="row g-3">
+                      <div class="col-12">
+                        <label for="prodAddress" class="form-label small text-muted mb-1">Full Pickup Address</label>
+                        <textarea id="prodAddress" class="form-control form-control-custom" rows="2" placeholder="House/Flat No., Street Address, Landmark, City, PIN Code..." required></textarea>
+                        <div class="invalid-feedback">Please enter the collection address.</div>
+                      </div>
+                      <div class="col-12">
+                        <label for="prodPickupTime" class="form-label small text-muted mb-1">Preferred Pickup Schedule</label>
+                        <input type="text" id="prodPickupTime" class="form-control form-control-custom" placeholder="e.g. Weekends morning (9 AM - 1 PM), Weekdays after 6 PM" required>
+                        <div class="invalid-feedback">Please enter your preferred schedule.</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Submit Product Button -->
+                  <button type="submit" class="btn btn-primary-custom btn-lg w-100 py-3" id="prodSubmitBtn">
+                    <span id="prodBtnText">Submit Product Pickup Request</span>
+                    <span id="prodBtnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Trust & Transparency Information -->
+        <div class="col-lg-5 animate-fade-up" style="animation-delay: 0.2s;">
+          <!-- Impact Breakdown Card -->
+          <div class="card border-0 glass-card p-4 mb-4">
+            <h3 class="h5 fw-bold mb-3">Your Donation Impact</h3>
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+              <div>
+                <span class="fs-4 fw-bold text-teal" id="impactAmt" style="color: var(--primary-color);">₹500</span>
+              </div>
+              <span class="badge rounded-pill text-teal" style="background-color: rgba(13, 148, 136, 0.1); color: var(--primary-color);" id="impactSub">General Fund</span>
+            </div>
+            
+            <hr class="my-3">
+            
+            <div class="d-flex align-items-start gap-3 mb-3">
+              <div class="bg-success text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; flex-shrink: 0;">
+                <i class="bi bi-check-lg small"></i>
+              </div>
+              <div>
+                <h4 class="h6 fw-bold mb-1" id="fieldImpactTitle">Food & Relief Support</h4>
+                <p class="text-muted small mb-0" id="fieldImpactDesc">This contribution funds nutritional lunch packs for 10 kids at our learning relief center for the next 2 days.</p>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-start gap-3">
+              <div class="bg-teal text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; flex-shrink: 0; background-color: var(--primary-color);">
+                <i class="bi bi-shield-check small"></i>
+              </div>
+              <div>
+                <h4 class="h6 fw-bold mb-1">Guaranteed Transparency</h4>
+                <p class="text-muted small mb-0">We share quarterly breakdown audits showing project completions and contractor expenses.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trust Badges Card -->
+          <div class="card border-0 glass-card p-4 text-center">
+            <h3 class="h6 fw-bold text-uppercase text-muted mb-4 tracking-wider">Trusted NGO Certifications</h3>
+            <div class="row align-items-center justify-content-center g-4">
+              <div class="col-4">
+                <i class="bi bi-shield-fill-check fs-2 text-teal" style="color: var(--primary-color);"></i>
+                <div class="small fw-semibold mt-1">SSL Secured</div>
+              </div>
+              <div class="col-4">
+                <i class="bi bi-award-fill fs-2 text-warning" style="color: var(--secondary-color);"></i>
+                <div class="small fw-semibold mt-1">Gold Star NGO</div>
+              </div>
+              <div class="col-4">
+                <i class="bi bi-safe2-fill fs-2 text-primary"></i>
+                <div class="small fw-semibold mt-1">PCI Compliant</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SUCCESS MODAL
+       Triggered via JavaScript upon successful form submission.
+       ========================================== -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 glass-card p-3">
+        <div class="modal-body text-center p-4">
+          <div class="rounded-circle bg-teal-soft text-teal d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px; background-color: rgba(13, 148, 136, 0.1); color: var(--primary-color);">
+            <i class="bi bi-heart-fill display-4 animate-float"></i>
+          </div>
+          <h3 class="fw-bold mb-2">Thank You, <span id="modalDonorName">Donor</span>!</h3>
+          <p class="text-muted mb-4">
+            We have securely processed your contribution of <strong class="text-teal" style="color: var(--primary-color);" id="modalDonorAmount">₹500</strong>. Your support is making a direct impact in the field today.
+          </p>
+          <div class="alert alert-success border-0 small text-start mb-4">
+            <i class="bi bi-envelope-fill me-2"></i> An audit receipt and tax form has been sent to <strong id="modalDonorEmail">your email</strong>.
+          </div>
+          <button type="button" class="btn btn-primary-custom w-100 py-2" data-bs-dismiss="modal" onclick="window.location.href='index.html'">
+            Return to Homepage
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       FOOTER SECTION (Consistent across all pages)
+       ========================================== -->
+  <footer class="footer-custom">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <h5 class="text-white"><i class="bi bi-heart-pulse-fill me-2" style="color: var(--primary-color);"></i>HopeGrid</h5>
+          <p class="text-muted mt-3">
+            HopeGrid is an international non-profit foundation focusing on sustainable development, community elevation, and global crisis relief.
+          </p>
+          <div class="social-icons mt-4">
+            <a href="#"><i class="bi bi-facebook"></i></a>
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+            <a href="#"><i class="bi bi-instagram"></i></a>
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+        
+        <div class="col-lg-2 col-md-6">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled mt-3">
+            <li class="mb-2"><a href="{% url 'home' %}">Home</a></li>
+            <li class="mb-2"><a href="{% url 'about' %}">About Us</a></li>
+            <li class="mb-2"><a href="{% url 'donate' %}">Donate</a></li>
+            <li class="mb-2"><a href="{% url 'contact' %}">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <div class="col-lg-3 col-md-6">
+          <h5>Active Projects</h5>
+          <ul class="list-unstyled mt-3">
+            <li class="mb-2"><a href="{% url 'donate' %}?campaign=water">Water Relief Wells</a></li>
+            <li class="mb-2"><a href="{% url 'donate' %}?campaign=education">Books & Classrooms</a></li>
+            <li class="mb-2"><a href="{% url 'donate' %}?campaign=medical">Mobile Health Care</a></li>
+            <li class="mb-2"><a href="{% url 'donate' %}?campaign=all">General Growth Fund</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <h5>Stay Updated</h5>
+          <p class="text-muted mt-3">Receive stories of impact, transparency reports, and invitation alerts.</p>
+          <form class="mt-3" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+            <div class="input-group">
+              <input type="email" class="form-control" placeholder="Your Email Address" aria-label="Your Email" required style="border-radius: 8px 0 0 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
+              <button class="btn btn-primary-custom" type="submit" style="border-radius: 0 8px 8px 0;">Go</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <hr class="my-5" style="border-color: rgba(255,255,255,0.1);">
+
+      <div class="row align-items-center">
+        <div class="col-md-6 text-center text-md-start small">
+          &copy; 2026 HopeGrid Organization. All Rights Reserved. Registered 501(c)(3) charity.
+        </div>
+        <div class="col-md-6 text-center text-md-end small mt-3 mt-md-0">
+          <a href="#" class="me-3">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BOOTSTRAP 5 BUNDLE WITH POPPER JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ==========================================
+       PAGE-SPECIFIC INTERACTIVE JAVASCRIPT
+       ========================================== -->
+  <script>
+    // State variables
+    let donationFrequency = 'One-time';
+    let donationAmount = 500;
+    let selectedCampaign = 'general';
+    let paymentMethod = 'card';
+
+    // Parse URL parameters (e.g. ?campaign=water) on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const campaignParam = urlParams.get('campaign');
+      if (campaignParam) {
+        const selectEl = document.getElementById('campaignSelect');
+        if (selectEl) {
+          selectEl.value = campaignParam;
+          selectedCampaign = campaignParam;
+          updateImpactOutput();
+        }
+      }
+      updateAmountsUI();
+    });
+
+
+
+    // 2. Select preset amount
+    function selectAmount(amount, buttonEl) {
+      donationAmount = amount;
+      
+      // Update custom input box to match
+      document.getElementById('customAmountInput').value = amount;
+
+      // Remove active class from all buttons
+      document.querySelectorAll('.btn-amount').forEach(btn => btn.classList.remove('active'));
+      
+      // Add active to clicked button
+      if (buttonEl) {
+        buttonEl.classList.add('active');
+      }
+
+      updateAmountsUI();
+    }
+
+    // 3. Focus custom input
+    function focusCustomInput() {
+      // Remove active class from preset buttons
+      document.querySelectorAll('.btn-amount').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('custom-amount-btn').classList.add('active');
+      
+      // Focus on input
+      const input = document.getElementById('customAmountInput');
+      input.focus();
+      input.select();
+    }
+
+    // 4. Handle direct text typing in custom input
+    function handleCustomInput(val) {
+      let num = parseFloat(val);
+      if (isNaN(num) || num < 0) {
+        donationAmount = 0;
+      } else {
+        donationAmount = num;
+      }
+      
+      // De-select regular buttons unless value matches
+      document.querySelectorAll('.btn-amount').forEach(btn => {
+        let amt = parseFloat(btn.getAttribute('data-amount'));
+        if (amt === donationAmount) {
+          btn.classList.add('active');
+          document.getElementById('custom-amount-btn').classList.remove('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      
+      if (![200, 500, 1000, 2000, 5000].includes(donationAmount)) {
+        document.getElementById('custom-amount-btn').classList.add('active');
+      }
+
+      updateAmountsUI();
+    }
+
+    // 5. Update display texts across DOM in Rupees
+    function updateAmountsUI() {
+      const formattedAmt = donationAmount.toLocaleString('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        maximumFractionDigits: 0
+      });
+      
+      // Update displays
+      document.getElementById('btnAmountText').innerText = formattedAmt;
+      document.getElementById('impactAmt').innerText = formattedAmt;
+      updateImpactOutput();
+    }
+
+    // 6. Change dynamic impact preview details
+    const campaignSelect = document.getElementById('campaignSelect');
+    campaignSelect.addEventListener('change', (e) => {
+      selectedCampaign = e.target.value;
+      updateImpactOutput();
+    });
+
+    function updateImpactOutput() {
+      const sub = document.getElementById('impactSub');
+      const title = document.getElementById('fieldImpactTitle');
+      const desc = document.getElementById('fieldImpactDesc');
+
+
+      if (selectedCampaign === 'general') {
+        sub.innerText = 'General Needs';
+        title.innerText = 'General Needs & Relief';
+        desc.innerText = `This support of ₹${donationAmount} allows HopeGrid to allocate emergency resources instantly where critical shortages occur first.`;
+      } else if (selectedCampaign === 'water') {
+        sub.innerText = 'Water Relief';
+        title.innerText = 'Pipes & Pump Systems';
+        desc.innerText = `This contribution will purchase approximately ${Math.max(1, Math.floor(donationAmount / 400))} feet of piping or concrete well seals for our target rural boreholes.`;
+      } else if (selectedCampaign === 'education') {
+        sub.innerText = 'Education';
+        title.innerText = 'Student Materials';
+        desc.innerText = `This donation supplies about ${Math.max(1, Math.floor(donationAmount / 650))} comprehensive student backpacks containing notebooks, scales, and pencil boxes.`;
+      } else if (selectedCampaign === 'medical') {
+        sub.innerText = 'Medical Care';
+        title.innerText = 'Clinic Supplies';
+        desc.innerText = `This donation purchases about ${Math.max(1, Math.floor(donationAmount / 350))} immunization vials, basic antibiotics, or diagnostic kits for our visiting nurse mobile clinic vans.`;
+      }
+    }
+
+    // 7. Toggle Payment Sections (Card vs Paypal vs UPI)
+    function togglePaymentSection(type) {
+      paymentMethod = type;
+      
+      // Hide all fields
+      document.querySelectorAll('.payment-method-fields').forEach(el => el.classList.add('d-none'));
+      
+      // Remove required inputs tags from hidden layouts to prevent browser block
+      document.querySelectorAll('.payment-method-fields input').forEach(el => el.removeAttribute('required'));
+
+      // Show active payment fields
+      const targetDiv = document.getElementById(`payment-${type}`);
+      targetDiv.classList.remove('d-none');
+      
+      // Add required tags back to active form
+      if (type === 'card') {
+        targetDiv.querySelectorAll('input').forEach(el => el.setAttribute('required', ''));
+      } else if (type === 'upi') {
+        document.getElementById('upiRefNumber').setAttribute('required', '');
+      }
+    }
+
+    // 8. Copy UPI ID helper
+    function copyUpiId() {
+      const upiField = document.getElementById('upiIdField');
+      upiField.select();
+      upiField.setSelectionRange(0, 99999); // For mobile devices
+      navigator.clipboard.writeText(upiField.value)
+        .then(() => {
+          alert("UPI ID copied to clipboard!");
+        })
+        .catch(err => {
+          console.error("Failed to copy UPI ID: ", err);
+        });
+    }
+
+    // 9. Handle Cash Form Submission (AJAX POST Integration)
+    const form = document.getElementById('donationForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      // Minimum validation check
+      if (donationAmount < 200) {
+        alert("Please select or enter an amount of ₹200.00 or higher.");
+        return;
+      }
+
+      // Check browser validity rules
+      if (!form.checkValidity()) {
+        e.stopPropagation();
+        form.classList.add('was-validated');
+        return;
+      }
+
+      // Show spinner, disable buttons
+      const btn = document.getElementById('submitBtn');
+      const text = document.getElementById('btnText');
+      const spinner = document.getElementById('btnSpinner');
+      
+      btn.disabled = true;
+      text.classList.add('d-none');
+      spinner.classList.remove('d-none');
+
+      // POST Request to Django backend view in INR
+      fetch('/donate/cash/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: new URLSearchParams({
+          'donor_name': document.getElementById('donorName').value,
+          'donor_email': document.getElementById('donorEmail').value,
+          'amount_inr': donationAmount,
+          'frequency': donationFrequency,
+          'campaign': selectedCampaign,
+          'payment_method': paymentMethod,
+          'transaction_reference_id': paymentMethod === 'upi' ? document.getElementById('upiRefNumber').value : ''
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        btn.disabled = false;
+        text.classList.remove('d-none');
+        spinner.classList.add('d-none');
+
+        if (data.status === 'success') {
+          // Format INR for modal display
+          const inrAmountText = parseFloat(data.amount_inr).toLocaleString('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            maximumFractionDigits: 0
+          });
+
+          // Populate Success Modal text details
+          document.getElementById('modalDonorName').innerText = data.donor_name;
+          document.getElementById('modalDonorAmount').innerText = inrAmountText;
+          document.getElementById('modalDonorEmail').innerText = document.getElementById('donorEmail').value;
+
+          // Show Bootstrap success modal
+          const myModal = new bootstrap.Modal(document.getElementById('successModal'), {});
+          myModal.show();
+          
+          // Reset form variables
+          form.reset();
+          form.classList.remove('was-validated');
+          updateAmountsUI();
+        } else {
+          alert("Error processing donation: " + data.error);
+        }
+      })
+      .catch(err => {
+        btn.disabled = false;
+        text.classList.remove('d-none');
+        spinner.classList.add('d-none');
+        console.error("Donation fetch error: ", err);
+        alert("An error occurred. Please try again.");
+      });
+    });
+
+    // 10. Handle Product Form Submission (AJAX POST Integration)
+    const prodForm = document.getElementById('productDonationForm');
+    prodForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Check validation
+      if (!prodForm.checkValidity()) {
+        e.stopPropagation();
+        prodForm.classList.add('was-validated');
+        return;
+      }
+
+      const btn = document.getElementById('prodSubmitBtn');
+      const text = document.getElementById('prodBtnText');
+      const spinner = document.getElementById('prodBtnSpinner');
+
+      btn.disabled = true;
+      text.classList.add('d-none');
+      spinner.classList.remove('d-none');
+
+      // POST Request to Django backend product view
+      fetch('/donate/product/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': prodForm.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: new URLSearchParams({
+          'donor_name': document.getElementById('prodDonorName').value,
+          'donor_email': document.getElementById('prodDonorEmail').value,
+          'donor_phone': document.getElementById('prodDonorPhone').value,
+          'product_category': document.getElementById('prodCategory').value,
+          'product_name': document.getElementById('prodName').value,
+          'product_description': document.getElementById('prodDesc').value,
+          'product_condition': document.getElementById('prodCondition').value,
+          'pickup_address': document.getElementById('prodAddress').value,
+          'pickup_time_preference': document.getElementById('prodPickupTime').value
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        btn.disabled = false;
+        text.classList.remove('d-none');
+        spinner.classList.add('d-none');
+
+        if (data.status === 'success') {
+          alert(`Thank you, ${data.donor_name}! Your pickup request for '${data.product_name}' (${data.product_category}) has been registered successfully as Request #${data.request_id}. Our logistics admin will review and schedule collection.`);
+          prodForm.reset();
+          prodForm.classList.remove('was-validated');
+        } else {
+          alert("Error submitting product request: " + data.error);
+        }
+      })
+      .catch(err => {
+        btn.disabled = false;
+        text.classList.remove('d-none');
+        spinner.classList.add('d-none');
+        console.error("Product donation fetch error: ", err);
+        alert("An error occurred. Please try again.");
+      });
+    });
+  </script>
+</body>
+</html>
