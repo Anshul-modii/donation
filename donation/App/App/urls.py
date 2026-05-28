@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 
 # ==============================================================================
-# EDUCATIONAL GUIDE FOR BEGINNERS / FRESHERS:
+
 # How Django Routing (URLs) Connects Client Requests to Views:
 # 
 # 1. urlpatterns List:

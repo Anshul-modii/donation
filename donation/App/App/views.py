@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 from .models import CashDonation, ProductDonation, ContactMessage
 
 # ==============================================================================
-# EDUCATIONAL GUIDE FOR BEGINNERS / FRESHERS:
+
 # How Django Views (Controllers) handle Client Requests:
 # 
 # 1. Routing:
