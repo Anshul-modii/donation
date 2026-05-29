@@ -1,7 +1,7 @@
 from django.db import models
 
 # ==============================================================================
-# EDUCATIONAL GUIDE FOR BEGINNERS / FRESHERS:
+
 # How Django Models Connect to the Database and the Frontend:
 # 
 # 1. Models (Database Schema):
