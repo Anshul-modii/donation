@@ -1,9 +1,12 @@
 import json
 import urllib.request
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_POST
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .models import CashDonation, ProductDonation, ContactMessage
 
 # ==============================================================================
@@ -51,14 +54,105 @@ def get_usd_to_inr_rate():
 # ==========================================
 # PAGE ROUTING VIEWS
 # ==========================================
+def login_view(request):
+    """
+    Login page - this is now the home page (root URL).
+    Handles both GET (display login form) and POST (process login).
+    Redirects authenticated users to their appropriate dashboard.
+    """
+    # If user is already logged in, redirect to appropriate dashboard
+    if request.user.is_authenticated:
+        if request.user.is_staff or request.user.is_superuser:
+            return redirect('admin_home')
+        else:
+            return redirect('index')
+    
+    # Handle POST request (login form submission)
+    if request.method == 'POST':
+        # Parse JSON or form data
+        if request.content_type == 'application/json':
+            try:
+                data = json.loads(request.body)
+            except json.JSONDecodeError:
+                return JsonResponse({'status': 'error', 'error': 'Invalid JSON format'}, status=400)
+        else:
+            data = request.POST
+        
+        username = data.get('username', '').strip()
+        password = data.get('password', '').strip()
+        role = data.get('role', 'donor').strip()
+        
+        # Validate input
+        if not username or not password:
+            if request.content_type == 'application/json':
+                return JsonResponse({'status': 'error', 'error': 'Username and password are required'}, status=400)
+            else:
+                return render(request, 'login.html', {'error': 'Username and password are required'})
+        
+        # Authenticate user
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            # Check if role matches user type
+            is_staff_user = user.is_staff or user.is_superuser
+            
+            # If admin role selected but user is not admin, reject
+            if role == 'admin' and not is_staff_user:
+                if request.content_type == 'application/json':
+                    return JsonResponse({'status': 'error', 'error': 'Unauthorized: Admin access required'}, status=403)
+                else:
+                    return render(request, 'login.html', {'error': 'You are not authorized to access the admin panel'})
+            
+            # If donor role selected but user is admin, reject
+            if role == 'donor' and is_staff_user:
+                if request.content_type == 'application/json':
+                    return JsonResponse({'status': 'error', 'error': 'Admin users must login as admin'}, status=403)
+                else:
+                    return render(request, 'login.html', {'error': 'Admin users must login using the Admin role'})
+            
+            # Login successful
+            login(request, user)
+            
+            # Return appropriate response
+            if request.content_type == 'application/json':
+                redirect_url = 'admin_home' if is_staff_user else 'index'
+                return JsonResponse({
+                    'status': 'success',
+                    'message': f'Login successful',
+                    'redirect_url': redirect_url
+                })
+            else:
+                # Redirect to appropriate dashboard
+                if is_staff_user:
+                    return redirect('admin_home')
+                else:
+                    return redirect('index')
+        else:
+            # Authentication failed
+            if request.content_type == 'application/json':
+                return JsonResponse({'status': 'error', 'error': 'Invalid username or password'}, status=401)
+            else:
+                return render(request, 'login.html', {'error': 'Invalid username or password'})
+    
+    # GET request - render login page
+    return render(request, 'login.html')
+
+
 def index_view(request):
-    """Renders the index/home page (index.html)."""
+    """
+    Public home/index page - now just a marketing/landing page.
+    If user is logged in, they won't see this page as login is the root.
+    """
     return render(request, 'index.html')
 
+
+@login_required(login_url='home')
 def about_view(request):
     """Renders the about us page (about.html)."""
     return render(request, 'about.html')
 
+
+@login_required(login_url='home')
 def donate_view(request):
     """
     Renders the interactive donation portal page (donate.html).
@@ -70,13 +164,46 @@ def donate_view(request):
     }
     return render(request, 'donate.html', context)
 
+
+@login_required(login_url='home')
 def contact_view(request):
     """Renders the contact us page (contact.html)."""
     return render(request, 'contact.html')
 
-def login_view(request):
-    """Renders the dashboard portal login page (login.html)."""
-    return render(request, 'login.html')
+
+@login_required(login_url='home')
+def admin_home_view(request):
+    """
+    Admin dashboard - only accessible to staff/superuser.
+    Displays admin-specific content and links.
+    """
+    # Verify user is admin
+    if not (request.user.is_staff or request.user.is_superuser):
+        return redirect('home')
+    
+    # Get donation statistics
+    total_cash_donations = CashDonation.objects.count()
+    completed_donations = CashDonation.objects.filter(status='Completed').count()
+    pending_donations = CashDonation.objects.filter(status='Pending').count()
+    total_amount = sum(float(d.amount_inr) for d in CashDonation.objects.all())
+    
+    context = {
+        'total_cash_donations': total_cash_donations,
+        'completed_donations': completed_donations,
+        'pending_donations': pending_donations,
+        'total_amount': round(total_amount, 2),
+        'recent_donations': CashDonation.objects.all().order_by('-id')[:10],
+        'recent_product_donations': ProductDonation.objects.all().order_by('-id')[:10],
+        'recent_messages': ContactMessage.objects.all().order_by('-id')[:10],
+    }
+    
+    return render(request, 'admin_home.html', context)
+
+
+def logout_view(request):
+    """Logout the current user and redirect to login page."""
+    logout(request)
+    return redirect('home')
 
 
 # ==========================================

@@ -19,11 +19,13 @@ from . import views
 
 urlpatterns = [
     # PAGE ROUTING (Renders HTML templates to the user)
-    path('', views.index_view, name='home'),                      # Matches http://127.0.0.1:8000/
-    path('about/', views.about_view, name='about'),               # Matches http://127.0.0.1:8000/about/
-    path('donate/', views.donate_view, name='donate'),            # Matches http://127.0.0.1:8000/donate/
-    path('contact/', views.contact_view, name='contact'),         # Matches http://127.0.0.1:8000/contact/
-    path('login/', views.login_view, name='login'),               # Matches http://127.0.0.1:8000/login/
+    path('', views.login_view, name='home'),                      # Login is now the home page at http://127.0.0.1:8000/
+    path('index/', views.index_view, name='index'),               # Public landing page / Donor home at http://127.0.0.1:8000/index/
+    path('about/', views.about_view, name='about'),               # About page (requires login)
+    path('donate/', views.donate_view, name='donate'),            # Donate page (requires login)
+    path('contact/', views.contact_view, name='contact'),         # Contact page (requires login)
+    path('admin-dashboard/', views.admin_home_view, name='admin_home'),  # Admin dashboard at http://127.0.0.1:8000/admin-dashboard/
+    path('logout/', views.logout_view, name='logout'),            # Logout endpoint at http://127.0.0.1:8000/logout/
     
     # API ENDPOINTS (Receives AJAX form data and processes it behind the scenes)
     path('donate/cash/', views.donate_cash_view, name='donate_cash'),       # Handles cash donation submits
