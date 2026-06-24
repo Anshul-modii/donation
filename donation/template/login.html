@@ -23,12 +23,12 @@
     <!-- Simple Top Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="{% url 'index' %}">
+        <a class="navbar-brand fw-bold" href="{% url 'home' %}">
           <i class="bi bi-heart-pulse-fill text-danger"></i> HopeGrid
         </a>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'index' %}">Home</a>
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'about' %}">About</a>
@@ -77,7 +77,7 @@
         {% endif %}
 
         <!-- Tab / Role Switch Slider -->
-        <div class="role-selector mb-4">
+        <div class="role-selector mb-4 d-none">
           <!-- Background Slider Pill -->
           <div class="role-slider-bg"></div>
           <!-- Selector Buttons -->
@@ -161,7 +161,7 @@
             id="submitBtn"
           >
             <span id="btnText"
-              >Log In as <span id="roleLabel">Donor</span></span
+              >Log In as Admin</span
             >
             <span
               id="btnSpinner"
@@ -172,7 +172,7 @@
           </button>
 
           <!-- Social login divider (For Donors only) -->
-          <div id="socialSection">
+          <div id="socialSection" class="d-none">
             <div class="text-center position-relative my-4">
               <hr class="text-muted opacity-25" />
               <span
@@ -200,7 +200,7 @@
 
         <!-- Footer Info / Register Option -->
         <div class="text-center mt-4">
-          <p class="text-muted small mb-0" id="registerPrompt">
+          <p class="text-muted small mb-0 d-none" id="registerPrompt">
             New to HopeGrid?
             <a
               href="#"
@@ -208,7 +208,7 @@
               >Create a donor account</a
             >
           </p>
-          <p class="text-muted small mb-0 d-none" id="adminPrompt">
+          <p class="text-muted small mb-0" id="adminPrompt">
             Authorized personnel only. Logs are actively monitored.
           </p>
         </div>
@@ -221,7 +221,7 @@
     <!-- INTERACTIVE INTERFACE JAVASCRIPT -->
     <script>
       // State variable: track currently selected role
-      let currentRole = "donor";
+      let currentRole = "admin";
 
       // 1. Role Toggle Handler
       function switchRole(role) {
@@ -231,20 +231,24 @@
         // Update button toggles styling
         const donorBtn = document.getElementById("btn-donor");
         const adminBtn = document.getElementById("btn-admin");
-        donorBtn.classList.toggle("active", role === "donor");
-        adminBtn.classList.toggle("active", role === "admin");
+        if (donorBtn) donorBtn.classList.toggle("active", role === "donor");
+        if (adminBtn) adminBtn.classList.toggle("active", role === "admin");
 
         // Slide Background Toggle Pill
         const slider = document.querySelector(".role-slider-bg");
-        if (role === "admin") {
-          slider.style.transform = "translateX(100%)";
-        } else {
-          slider.style.transform = "translateX(0)";
+        if (slider) {
+          if (role === "admin") {
+            slider.style.transform = "translateX(100%)";
+          } else {
+            slider.style.transform = "translateX(0)";
+          }
         }
 
         // Update Button Label
-        document.getElementById("roleLabel").innerText =
-          role.charAt(0).toUpperCase() + role.slice(1);
+        const roleLabel = document.getElementById("roleLabel");
+        if (roleLabel) {
+          roleLabel.innerText = role.charAt(0).toUpperCase() + role.slice(1);
+        }
 
         // Show/Hide role specific content (Social login, prompts)
         const socialSection = document.getElementById("socialSection");
@@ -252,13 +256,13 @@
         const adminPrompt = document.getElementById("adminPrompt");
 
         if (role === "admin") {
-          socialSection.classList.add("d-none");
-          registerPrompt.classList.add("d-none");
-          adminPrompt.classList.remove("d-none");
+          if (socialSection) socialSection.classList.add("d-none");
+          if (registerPrompt) registerPrompt.classList.add("d-none");
+          if (adminPrompt) adminPrompt.classList.remove("d-none");
         } else {
-          socialSection.classList.remove("d-none");
-          registerPrompt.classList.remove("d-none");
-          adminPrompt.classList.add("d-none");
+          if (socialSection) socialSection.classList.remove("d-none");
+          if (registerPrompt) registerPrompt.classList.remove("d-none");
+          if (adminPrompt) adminPrompt.classList.add("d-none");
         }
 
         // Clear inputs for security
@@ -287,8 +291,8 @@
         text.classList.add("d-none");
         spinner.classList.remove("d-none");
 
-        // Send login request to backend
-        fetch("/", {
+        // Send login request to backend admin-login URL
+        fetch("{% url 'admin_login' %}", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -309,21 +313,9 @@
             if (data.status === "success") {
               // Redirect using the URL from backend response
               if (data.redirect_url) {
-                // Convert Django URL name to actual path
-                const urlMap = {
-                  admin_home: "/admin-dashboard/",
-                  index: "/index/",
-                  home: "/",
-                };
-                const redirectPath = urlMap[data.redirect_url] || "/index/";
-                window.location.href = redirectPath;
+                window.location.href = data.redirect_url;
               } else {
-                // Fallback redirect based on role
-                if (currentRole === "admin") {
-                  window.location.href = "/admin-dashboard/";
-                } else {
-                  window.location.href = "/index/";
-                }
+                window.location.href = "/admin/";
               }
             } else {
               // Show error message

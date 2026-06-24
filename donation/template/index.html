@@ -52,7 +52,7 @@
               <a
                 class="nav-link active"
                 aria-current="page"
-                href="{% url 'index' %}"
+                href="{% url 'home' %}"
                 >Home</a
               >
             </li>
@@ -65,35 +65,28 @@
             <li class="nav-item px-2">
               <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
             </li>
-            <li class="nav-item ms-3">
-              {% if user.is_authenticated %}
-              <!-- Show dashboard and logout for logged-in users -->
-              {% if user.is_staff or user.is_superuser %}
-              <a
-                class="btn btn-primary-custom pulse-button"
-                href="{% url 'admin_home' %}"
-              >
-                <i class="bi bi-speedometer2 me-2"></i>Admin Dashboard
+            {% if user.is_authenticated and user.is_staff %}
+            <li class="nav-item px-2">
+              <a class="nav-link" href="/admin/">Django Admin</a>
+            </li>
+            <li class="nav-item ms-2">
+              <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">
+                <i class="bi bi-box-arrow-right"></i> Logout
               </a>
-              {% else %}
-              <!-- Donor is already on the home page -->
-              {% endif %} {% else %}
-              <!-- Show donate/login for non-authenticated users -->
+            </li>
+            {% else %}
+            <li class="nav-item px-2">
+              <a class="nav-link" href="{% url 'admin_login' %}">Admin Login</a>
+            </li>
+            {% endif %}
+            <li class="nav-item ms-3">
               <a
                 class="btn btn-primary-custom pulse-button"
                 href="{% url 'donate' %}"
               >
                 <i class="bi bi-heart-fill me-2"></i>Donate Now
               </a>
-              {% endif %}
             </li>
-            {% if user.is_authenticated %}
-            <li class="nav-item ms-2">
-              <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">
-                <i class="bi bi-box-arrow-right"></i> Logout
-              </a>
-            </li>
-            {% endif %}
           </ul>
         </div>
       </div>

@@ -56,16 +56,17 @@ def get_usd_to_inr_rate():
 # ==========================================
 def login_view(request):
     """
-    Login page - this is now the home page (root URL).
+    Login page - accessible at /admin-login/.
     Handles both GET (display login form) and POST (process login).
-    Redirects authenticated users to their appropriate dashboard.
+    Only authenticates staff/superuser accounts.
+    Redirects authenticated admin users directly to Django Admin Panel.
     """
-    # If user is already logged in, redirect to appropriate dashboard
+    # If user is already logged in as staff/superuser, redirect to Django Admin Panel
     if request.user.is_authenticated:
         if request.user.is_staff or request.user.is_superuser:
-            return redirect('admin_home')
+            return redirect('/admin/')
         else:
-            return redirect('index')
+            logout(request)
     
     # Handle POST request (login form submission)
     if request.method == 'POST':
@@ -80,7 +81,6 @@ def login_view(request):
         
         username = data.get('username', '').strip()
         password = data.get('password', '').strip()
-        role = data.get('role', 'donor').strip()
         
         # Validate input
         if not username or not password:
@@ -93,40 +93,27 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
-            # Check if role matches user type
             is_staff_user = user.is_staff or user.is_superuser
             
-            # If admin role selected but user is not admin, reject
-            if role == 'admin' and not is_staff_user:
+            # Reject non-staff users
+            if not is_staff_user:
                 if request.content_type == 'application/json':
                     return JsonResponse({'status': 'error', 'error': 'Unauthorized: Admin access required'}, status=403)
                 else:
                     return render(request, 'login.html', {'error': 'You are not authorized to access the admin panel'})
             
-            # If donor role selected but user is admin, reject
-            if role == 'donor' and is_staff_user:
-                if request.content_type == 'application/json':
-                    return JsonResponse({'status': 'error', 'error': 'Admin users must login as admin'}, status=403)
-                else:
-                    return render(request, 'login.html', {'error': 'Admin users must login using the Admin role'})
-            
             # Login successful
             login(request, user)
             
-            # Return appropriate response
+            # Return appropriate response (directing to /admin/)
             if request.content_type == 'application/json':
-                redirect_url = 'admin_home' if is_staff_user else 'index'
                 return JsonResponse({
                     'status': 'success',
-                    'message': f'Login successful',
-                    'redirect_url': redirect_url
+                    'message': 'Login successful',
+                    'redirect_url': '/admin/'
                 })
             else:
-                # Redirect to appropriate dashboard
-                if is_staff_user:
-                    return redirect('admin_home')
-                else:
-                    return redirect('index')
+                return redirect('/admin/')
         else:
             # Authentication failed
             if request.content_type == 'application/json':
@@ -140,23 +127,22 @@ def login_view(request):
 
 def index_view(request):
     """
-    Public home/index page - now just a marketing/landing page.
-    If user is logged in, they won't see this page as login is the root.
+    Public home/index page - marketing/landing page.
+    No login is required to access this page.
     """
     return render(request, 'index.html')
 
 
-@login_required(login_url='home')
 def about_view(request):
-    """Renders the about us page (about.html)."""
+    """Renders the about us page (about.html). Accessible without logging in."""
     return render(request, 'about.html')
 
 
-@login_required(login_url='home')
 def donate_view(request):
     """
     Renders the interactive donation portal page (donate.html).
     Passes the current exchange rate to the page so it can display the conversion live.
+    Accessible without logging in.
     """
     exchange_rate = get_usd_to_inr_rate()
     context = {
@@ -165,13 +151,12 @@ def donate_view(request):
     return render(request, 'donate.html', context)
 
 
-@login_required(login_url='home')
 def contact_view(request):
-    """Renders the contact us page (contact.html)."""
+    """Renders the contact us page (contact.html). Accessible without logging in."""
     return render(request, 'contact.html')
 
 
-@login_required(login_url='home')
+@login_required(login_url='admin_login')
 def admin_home_view(request):
     """
     Admin dashboard - only accessible to staff/superuser.
@@ -201,9 +186,10 @@ def admin_home_view(request):
 
 
 def logout_view(request):
-    """Logout the current user and redirect to login page."""
+    """Logout the current user and redirect to home page."""
     logout(request)
     return redirect('home')
+
 
 
 # ==========================================

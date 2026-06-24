@@ -19,13 +19,14 @@ from . import views
 
 urlpatterns = [
     # PAGE ROUTING (Renders HTML templates to the user)
-    path('', views.login_view, name='home'),                      # Login is now the home page at http://127.0.0.1:8000/
-    path('index/', views.index_view, name='index'),               # Public landing page / Donor home at http://127.0.0.1:8000/index/
-    path('about/', views.about_view, name='about'),               # About page (requires login)
-    path('donate/', views.donate_view, name='donate'),            # Donate page (requires login)
-    path('contact/', views.contact_view, name='contact'),         # Contact page (requires login)
-    path('admin-dashboard/', views.admin_home_view, name='admin_home'),  # Admin dashboard at http://127.0.0.1:8000/admin-dashboard/
-    path('logout/', views.logout_view, name='logout'),            # Logout endpoint at http://127.0.0.1:8000/logout/
+    path('', views.index_view, name='home'),                      # Public landing page is the home page at http://127.0.0.1:8000/
+    path('index/', views.index_view, name='index'),               # Keep /index/ URL pointing to index_view for compatibility
+    path('admin-login/', views.login_view, name='admin_login'),   # Admin login page at http://127.0.0.1:8000/admin-login/
+    path('about/', views.about_view, name='about'),               # About page (public)
+    path('donate/', views.donate_view, name='donate'),            # Donate page (public)
+    path('contact/', views.contact_view, name='contact'),         # Contact page (public)
+    path('admin-dashboard/', views.admin_home_view, name='admin_home'),  # Admin dashboard (staff only)
+    path('logout/', views.logout_view, name='logout'),            # Logout endpoint
     
     # API ENDPOINTS (Receives AJAX form data and processes it behind the scenes)
     path('donate/cash/', views.donate_cash_view, name='donate_cash'),       # Handles cash donation submits
