@@ -14,6 +14,7 @@ python manage.py migrate
 # Create superuser automatically if it doesn't exist
 python -c "
 import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'donation.settings')
 import django
 django.setup()
 from django.contrib.auth import get_user_model
